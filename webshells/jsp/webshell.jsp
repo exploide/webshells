@@ -52,7 +52,7 @@
 %>
         </div>
         <textarea readonly="readonly" rows="25" style="width: 80%;">
-<%= stdout %>
+<%= htmlEscape(stdout.toString()) %>
         </textarea>
         <div style="margin: 3px auto;">
 <%
