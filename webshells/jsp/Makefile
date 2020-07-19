@@ -6,4 +6,4 @@ webshell.war: webshell.jsp WEB-INF/web.xml
 
 .PHONY: clean
 clean:
-	rm -f webshell.war
+	rm -f *.war
