@@ -11,8 +11,6 @@
         JSP Webshell allowing code execution
     </description>
 
-    <request-character-encoding>UTF-8</request-character-encoding>
-
     <welcome-file-list>
         <welcome-file>webshell.jsp</welcome-file>
     </welcome-file-list>
