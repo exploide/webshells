@@ -58,13 +58,30 @@
     <head>
         <meta charset="UTF-8" />
         <title>JSP Webshell</title>
+        <style>
+            body {
+                font-family: sans-serif;
+            }
+            input[type=text] {
+                font-family: monospace;
+            }
+            .cmd-box {
+                width: 80%;
+            }
+            .info-line {
+                margin: 3px auto;
+            }
+            .feature-box {
+                margin: 1rem auto;
+            }
+        </style>
     </head>
-    <body style="font-family: sans-serif;">
+    <body>
         <form id="form-cmd" method="POST" action="">
-            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" style="width: 80%;" />
+            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" class="cmd-box" />
             <input type="submit" name="submit-cmd" value="Run" />
         </form>
-        <div style="margin: 3px auto;">
+        <div class="info-line">
 <%
     if(shell != null) {
         out.println("Output of command <code>" + htmlEscape(shell) + " " + htmlEscape(shellOpt) + "</code> with argument: <code>" + htmlEscape(cmd) + "</code>");
@@ -73,17 +90,17 @@
     }
 %>
         </div>
-        <textarea readonly="readonly" rows="25" style="width: 80%;">
+        <textarea readonly="readonly" rows="25" class="cmd-box">
 <%= htmlEscape(stdout.toString()) %>
         </textarea>
-        <div style="margin: 3px auto;">
+        <div class="info-line">
 <%
     if(exitCode != null) {
         out.println("Exit code: <code>" + exitCode + "</code>");
     }
 %>
         </div>
-        <div style="margin: 1rem auto;">
+        <div class="feature-box">
             <b>File Download</b>
             <div>
 <%= downloadMsg %>
