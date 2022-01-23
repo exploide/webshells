@@ -3,6 +3,9 @@
 This repository contains my webshells written due to my dissatisfaction with many existing webshells, which usually lack the one or another feature.
 Feel free to use them during CTFs or pentests.
 
+Often, a minimalist web shell would be sufficient and only be used to fire up a reverse shell.
+But in uncomfortable environments, e.g. when network traffic is blocked, a feature-equipped webshell like this comes in handy to examine the situation.
+
 ## Features
 
 - Large input field with autofocus
