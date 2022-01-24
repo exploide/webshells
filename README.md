@@ -25,6 +25,6 @@ But in uncomfortable environments, e.g. when network traffic is blocked, a featu
 
 ### JSP / WAR
 
-- Detects OS and uses `cmd.exe /c` on Windows and `sh -c` on Unix-like
+- Detects OS and uses `cmd.exe /c` on Windows and `/bin/sh -c` on Unix-like
 - Includes stderr in output
 - `Makefile` creates WAR file out of JSP webshell
