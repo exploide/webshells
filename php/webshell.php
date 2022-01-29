@@ -37,8 +37,10 @@
                 } else {
                     $upload_msg .= "Error saving <code>" . htmlspecialchars($filename) . "</code> to <code>" . htmlspecialchars($dest) . "</code><br />\n";
                 }
+            } else if($error == UPLOAD_ERR_INI_SIZE) {
+                $upload_msg .= "Error uploading <code>" . htmlspecialchars(basename($_FILES["upload-files"]["name"][$key])) . "</code>: File too large, maximum is <code>" . htmlspecialchars(ini_get("upload_max_filesize")) ."</code><br />\n";
             } else {
-                $upload_msg .= "Error uploading <code>" . htmlspecialchars($filename) . "</code><br />\n";
+                $upload_msg .= "Error uploading <code>" . htmlspecialchars(basename($_FILES["upload-files"]["name"][$key])) . "</code>, error code: <code>" . htmlspecialchars($error) . "</code><br />\n";
             }
         }
     }
