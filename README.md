@@ -12,6 +12,7 @@ But in uncomfortable environments, e.g. when network traffic is blocked, a featu
 - Escapes HTML special characters in output when possible
 - Shows exit code when possible
 - Simple shell history with <kbd>&uarr;</kbd> / <kbd>&darr;</kbd> utilizing JavaScript's session storage
+- Multi file upload
 - File download
 - Optionally, restrict access by setting a stealth password, will return 404 if not given
 - No dependencies
@@ -20,7 +21,6 @@ But in uncomfortable environments, e.g. when network traffic is blocked, a featu
 ### PHP
 
 - Supports multiple execution functions, in case some are disabled
-- File upload
 - Show `phpinfo()`
 
 ### JSP / WAR

