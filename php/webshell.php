@@ -129,8 +129,8 @@
 ?>
             </div>
             <form method="POST" action="" enctype="multipart/form-data">
-                <input type="file" name="upload-files[]" multiple="multiple" />
                 <input type="text" name="upload-dir" placeholder="Destination folder" />
+                <input type="file" name="upload-files[]" multiple="multiple" />
                 <input type="submit" name="submit-upload" value="Upload" />
             </form>
         </div>
