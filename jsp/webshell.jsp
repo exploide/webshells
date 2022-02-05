@@ -188,16 +188,21 @@
                 sessionStorage.setItem("shellHistory", JSON.stringify(shellHistory));
             }
             function cycleHistory(event) {
+                var cmdInput = document.getElementById("cmd");
                 if(event.code == "ArrowUp" && historyPos > 0) {
                     historyPos--;
-                    document.getElementById("cmd").value = shellHistory[historyPos];
+                    cmdInput.value = shellHistory[historyPos];
                 } else if(event.code == "ArrowDown" && historyPos < shellHistory.length) {
                     historyPos++;
                     if(historyPos < shellHistory.length) {
-                        document.getElementById("cmd").value = shellHistory[historyPos];
+                        cmdInput.value = shellHistory[historyPos];
                     } else {
-                        document.getElementById("cmd").value = "";
+                        cmdInput.value = "";
                     }
+                }
+                if(event.code == "ArrowUp" || event.code == "ArrowDown") {
+                    cmdInput.setSelectionRange(cmdInput.value.length, cmdInput.value.length);
+                    event.preventDefault();
                 }
             }
             var shellHistory = JSON.parse(sessionStorage.getItem("shellHistory"));
