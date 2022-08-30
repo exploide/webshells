@@ -1,6 +1,6 @@
 <?php
     error_reporting(E_ALL);
-    if(function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc()) {
+    if(function_exists("get_magic_quotes_gpc") && @get_magic_quotes_gpc()) {
         function stripslashes_deep($value) {
             return is_array($value) ? array_map("stripslashes_deep", $value) : stripslashes($value);
         }
