@@ -17,18 +17,19 @@ But in uncomfortable environments, e.g. when network traffic is blocked, a featu
 - No external dependencies
 - Aims to offer most useful features without being overly bloated (at least I tried...)
 
-### PHP
+### PHP / PHAR
 
 - Supports multiple execution functions, in case some are disabled
 - Multi file upload
 - Show `phpinfo()`
+- `Makefile` creates PHAR file out of PHP webshell
 
 ### JSP / WAR
 
 - Detects OS and uses `cmd.exe /c` on Windows and `/bin/sh -c` on Unix-like
 - Includes stderr in output
-- `Makefile` creates WAR file out of JSP webshell
 - Multi file upload
+- `Makefile` creates WAR file out of JSP webshell
 
 ### ASP
 
