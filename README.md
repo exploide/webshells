@@ -28,6 +28,7 @@ But in uncomfortable environments, e.g. when network traffic is blocked, a featu
 
 - Detects OS and uses `cmd.exe /c` on Windows and `/bin/sh -c` on Unix-like
 - Includes stderr in output
+- On Windows, detects codepage and decodes output accordingly
 - Multi file upload
 - `Makefile` creates WAR file out of JSP webshell
 
