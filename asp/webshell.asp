@@ -11,7 +11,7 @@ End If
 
 Dim downloadFile, downloadMsg, fs, objStream
 downloadFile = Request.Form("downloadFile")
-If trim(downloadFile) <> "" Then
+If downloadFile <> "" Then
     Set fs = Server.CreateObject("Scripting.FileSystemObject")
     Set objStream = Server.CreateObject("ADODB.Stream")
     objStream.Open()

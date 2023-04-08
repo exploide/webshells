@@ -13,7 +13,7 @@
 
     String downloadFile = request.getParameter("downloadFile");
     String downloadMsg = "";
-    if(downloadFile != null && !downloadFile.trim().equals("")) {
+    if(downloadFile != null) {
         File f = new File(downloadFile);
         if(f.canRead()) {
             response.setContentType("application/octet-stream");

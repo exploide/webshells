@@ -20,7 +20,7 @@
         exit();
     }
 
-    if(isset($_POST["downloadFile"]) && trim($_POST["downloadFile"]) !== "") {
+    if(isset($_POST["downloadFile"])) {
         $file = $_POST["downloadFile"];
         if(is_readable($file)) {
             header('Content-Type: ' . mime_content_type($file));
