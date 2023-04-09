@@ -34,7 +34,7 @@
     }
 
     if(isset($_FILES["uploadFiles"])) {
-        if(isset($_POST["uploadDir"]) && trim($_POST["uploadDir"]) !== "") {
+        if(isset($_POST["uploadDir"]) && $_POST["uploadDir"] !== "") {
             $upload_dir = $_POST["uploadDir"];
         } else {
             $upload_dir = ".";
