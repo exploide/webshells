@@ -88,7 +88,7 @@
         proc.StartInfo.CreateNoWindow = true;
         proc.StartInfo.RedirectStandardOutput = true;
         proc.StartInfo.RedirectStandardError = true;
-        System.Diagnostics.DataReceivedEventHandler handler = new System.Diagnostics.DataReceivedEventHandler((sender, e) => { output.Append(e.Data).Append(Environment.NewLine); });
+        System.Diagnostics.DataReceivedEventHandler handler = new System.Diagnostics.DataReceivedEventHandler(delegate(object sender, System.Diagnostics.DataReceivedEventArgs e) { output.Append(e.Data).Append(Environment.NewLine); });
         proc.OutputDataReceived += handler;
         proc.ErrorDataReceived += handler;
         proc.Start();
